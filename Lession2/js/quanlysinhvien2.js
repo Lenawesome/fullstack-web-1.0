@@ -52,7 +52,7 @@ function showStudentById(id) {
     } else {
         console.log(`Khong tin tai ma sinh vien: ${id}`);
     }
-}
+}z
 
 
 function updateStudentById(id, fullname, age) {
