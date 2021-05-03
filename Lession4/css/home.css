@@ -1,0 +1,16 @@
+.disabled {
+    display: none;
+}
+
+input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#form-search {
+    margin-bottom: 100px;
+}
+
+.container {
+    padding: 50px;
+}
