@@ -14,3 +14,18 @@ input[type="text"] {
 .container {
     padding: 50px;
 }
+
+.edit,
+.edit:hover {
+    color: #FFC107;
+}
+
+.delete,
+.delete:hover {
+    color: #E34724;
+}
+
+.save,
+.save:hover {
+    color: #27C46B;
+}
