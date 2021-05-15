@@ -18,7 +18,7 @@ function fetchData(toDoList) {
                     <div class="todo-item-title">${title}</div>
                     <i>${deadline}</i>
                     <input ${isDone} class="checked-flag form-check-input" type="checkbox" onchange="setStatus(${id})">
-                    <button onclick="deleteById(${id}) type="button" class="btn-close delete-btn" aria-label="Close"></button>
+                    <button onclick="deleteById(${id})" type="button" class="btn-close delete-btn" aria-label="Close"></button>
                 </li>`;
     });
     $(".todo-list").html(html);
@@ -30,7 +30,7 @@ function bindInitEvent() {
         let title = $("#add-reminder input[name='title']").val();
         let deadline = $("#add-reminder input[name='deadline']").val();
         let isDone = 0;
-        let newItem = {id: Date.now(), title: title, deadline: deadline, isDone: isDone };
+        let newItem = { id: Date.now(), title: title, deadline: deadline, isDone: isDone };
         toDoList.push(newItem);
         localStorage.setItem('todoList', JSON.stringify(toDoList));
         clearInput();
@@ -49,17 +49,17 @@ function clearInput() {
 }
 
 
-function deleteById(id){
-    toDoList = toDoList.filter(function(obj){
+function deleteById(id) {
+    toDoList = toDoList.filter(function (obj) {
         return obj.id !== id;
     });
     localStorage.setItem('todoList', JSON.stringify(toDoList));
     fetchData(toDoList);
 }
 
-function setStatus(id){
+function setStatus(id) {
     toDoList.forEach(element => {
-        if(element.id == id){
+        if (element.id == id) {
             element.isDone = element.isDone ? 0 : 1;
         }
     });
@@ -70,8 +70,8 @@ function setStatus(id){
 
 function calculateDeadline(deadLine, dateNow) {
     deadLine = new Date(deadLine);
-    deadLine.setHours(23,59,59);
-    if(deadLine < dateNow){
+    deadLine.setHours(23, 59, 59);
+    if (deadLine < dateNow) {
         return `Time's up`;
     }
     let diffInMilliSeconds = Math.abs(deadLine - dateNow) / 1000;
@@ -93,14 +93,14 @@ function calculateDeadline(deadLine, dateNow) {
 
     let difference = '';
     if (days > 0) {
-      difference += (days === 1) ? `${days} day, ` : `${days} days, `;
+        difference += (days === 1) ? `${days} day, ` : `${days} days, `;
     }
 
     difference += (hours === 0 || hours === 1) ? `${hours} hour, ` : `${hours} hours, `;
 
-    difference += (minutes === 0 || hours === 1) ? `${minutes} minutes` : `${minutes} minutes`; 
+    difference += (minutes === 0 || hours === 1) ? `${minutes} minutes` : `${minutes} minutes`;
 
     return difference;
-  }
+}
 
 
