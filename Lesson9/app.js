@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const validator = require('validator');
+var cors = require('cors');
+app.use(cors());
 
 const FILE_PATH = "./students.json";
 var students = [];
@@ -10,6 +12,7 @@ var students = [];
 router.get('/students', function(req, res) {
     try {
         students = fetchStudentData(FILE_PATH);
+
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -30,6 +33,7 @@ router.put('/students/:id', function(req, res) {
 
 router.delete('/students/:id', function(req, res) {
     const studentId = req.params.id;
+
     // TODO: Validate id
     if (isStudentExist(studentId)) {
         students = students.filter(function(item) {
@@ -45,8 +49,8 @@ app.use(express.json());
 app.use('/static', express.static(__dirname + '/images'));
 app.use(router);
 
-app.listen(3000, function() {
-    console.log("Server listening on port 3000");
+app.listen(3001, function() {
+    console.log("Server listening on port 3001");
 });
 
 // FILE
@@ -59,13 +63,14 @@ function fetchStudentData(filePath) {
 function createStudent(filePath, req, res) {
 
     let data = req.body;
+
     // TODO: Data validation
     if (isExistValid(data)) {
         // Append new data to file
         students.push(data);
         fs.writeFile(filePath, JSON.stringify(students), 'utf8', function(err) {
             if (err) res.status(404).send(err.message);
-            else res.status(200).json(req.body);
+            else res.status(200).json('Success');
         });
     } else {
         res.status(400).send('Invalid Data');
@@ -73,6 +78,7 @@ function createStudent(filePath, req, res) {
 }
 
 function rewriteStudentsData(req, res) {
+
     fs.writeFile(FILE_PATH, JSON.stringify(students), 'utf8', function(err) {
         if (err) res.status(404).send(err.message);
         else res.status(200).send('Success');
@@ -85,6 +91,7 @@ function updateStudentData(studentId, body, req, res) {
     newStudent['name'] = body.name;
     newStudent['age'] = body.age;
     // TODO: Validate body, id
+
     if (!isExistValid(newStudent)) {
         students = fetchStudentData(FILE_PATH);
         students = students.map(function(item) {
