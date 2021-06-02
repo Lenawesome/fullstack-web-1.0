@@ -9,6 +9,8 @@ input[type="text"] {
 
 #form-search {
     margin-bottom: 100px;
+    display: flex;
+    justify-content: space-around;
 }
 
 .container {
@@ -28,4 +30,15 @@ input[type="text"] {
 .save,
 .save:hover {
     color: #27C46B;
+}
+
+input[name="search"] {
+    display: inline-block;
+    width: 80%;
+}
+
+input[type="submit"] {
+    display: inline-block;
+    width: auto;
+    max-width: 200px;
 }

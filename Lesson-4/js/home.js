@@ -1,8 +1,16 @@
-$(document).ready(bindClickEvents);
+var students = [];
+$(document).ready(function() {
+    initData();
+    bindClickEvents();
+});
+
+function initData() {
+
+}
 
 function bindClickEvents() {
 
-    $('.edit').click(function () {
+    $('.edit').click(function() {
         let inputs = $(this).parents('tr').find('td:not(:last-child)');
 
         for (let i = 0; i < inputs.length; i++) {
@@ -13,7 +21,7 @@ function bindClickEvents() {
         $(this).parents('tr').find('td:last-child .save').removeClass('disabled');
     });
 
-    $('.save').click(function () {
+    $('.save').click(function() {
         let inputs = $(this).parents('tr').find('td:not(:last-child) input');
         for (let i = 0; i < inputs.length; i++) {
             $(inputs[i]).parent()[0].innerHTML = inputs[i].value;
@@ -23,11 +31,11 @@ function bindClickEvents() {
         $(this).parents('tr').find('td:last-child .edit').removeClass('disabled');
     });
 
-    $('.delete').click(function () {
+    $('.delete').click(function() {
         $(this).parents('tr').remove();
     });
 
-    $('#form-search').submit(function (event) {
+    $('#form-search').submit(function(event) {
         event.preventDefault();
         let searchInput = $('input[name="search"]').val();
         let allRows = $('table tbody tr');
@@ -46,5 +54,3 @@ function bindClickEvents() {
         }
     });
 }
-
-
