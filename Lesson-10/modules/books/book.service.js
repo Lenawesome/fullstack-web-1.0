@@ -27,9 +27,14 @@ const remove = function(id) {
     return repository.remove(id);
 }
 
+const searchByAuthorNCategory = function(authorName, categoryName) {
+    return repository.searchByAuthorNCategory(authorName, categoryName);
+}
+
 module.exports = {
     find: find,
     create: create,
     update: update,
-    remove: remove
+    remove: remove,
+    searchByAuthorNCategory: searchByAuthorNCategory
 };

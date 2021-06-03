@@ -6,7 +6,7 @@ const studentRouter = require('./modules/categorys/category.router');
 const authorRouter = require('./modules/authors/author.router');
 const bookRouter = require('./modules/books/book.router');
 
-mongoose.connect(configs.MONGO_CONNECTION_URL);
+mongoose.connect(configs.MONGO_CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(express.json());
 app.use('/api/categorys', studentRouter.router);

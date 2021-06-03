@@ -32,10 +32,15 @@ const remove = function(id) {
     return Book.deleteOne({ _id: id })
 }
 
+const searchByAuthorNCategory = function(authoName, categoryName) {
+    return Book.find({}).populate({ path: 'authors', select: 'name' }).populate('categories').exec();
+}
+
 module.exports = {
     find: find,
     findById: findById,
     create: create,
     update: update,
-    remove: remove
+    remove: remove,
+    searchByAuthorNCategory: searchByAuthorNCategory
 };
