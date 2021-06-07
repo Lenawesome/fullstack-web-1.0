@@ -1,0 +1,40 @@
+input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#form-search {
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.container {
+    padding: 50px;
+}
+
+.edit,
+.edit:hover {
+    color: #FFC107;
+}
+
+.delete,
+.delete:hover {
+    color: #E34724;
+}
+
+.save,
+.save:hover {
+    color: #27C46B;
+}
+
+input[name="search"] {
+    display: inline-block;
+    width: 80%;
+}
+
+input[type="submit"] {
+    display: inline-block;
+    width: auto;
+    max-width: 200px;
+}
