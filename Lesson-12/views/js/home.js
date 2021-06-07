@@ -1,7 +1,7 @@
 var students = [];
 const port = 3001;
 const limit = 1;
-var totalPages = 1;
+var totalPages = 2;
 $(document).ready(function() {
     initData();
     bindClickEvents();
@@ -15,7 +15,7 @@ function initData(callback = null, page = 1) {
     }).done(function(res) {
         students = res.data;
         if (page === 1) {
-            totalPages = res.total;
+            totalPages = Math.floor(res.total / limit);
         }
         jQuery('tbody').html('');
         students.forEach(student => {
@@ -25,7 +25,7 @@ function initData(callback = null, page = 1) {
             <td data-type="fullname">${student.name}</td>
             <td data-type="age">${student.age}</td>
             <td>
-                <a href="#" class="save disabled" title="" data-id="${student._id}" data-toggle="tooltip" data-original-title="Add"><i
+                <a href="#" class="save hide" title="" data-id="${student._id}" data-toggle="tooltip" data-original-title="Add"><i
       class="material-icons">save</i></a>
                 <a href="#" class="edit" title="" data-toggle="tooltip" data-original-title="Edit"><i
       class="material-icons">edit</i></a>
@@ -47,11 +47,9 @@ function initData(callback = null, page = 1) {
                     <li class="page-item ${disabled}">
                     <a onclick=gotoPage(${i}) class="page-link" href="javascript:void(0)">${i}</a>
                     </li>
-                </ul>
-            </nav>
             `);
         }
-    }).fail(function(jqXHR, textStatus, errorThrown) {
+    }).fail(function() {
         jQuery('tbody').append("Failed to connect to server!!!");
     });
 }
@@ -170,7 +168,7 @@ function bindClickEvents() {
         <td data-type="age"><input type="text" value=""></td>
         <td>
             <a href="#" class="save new" title="" data-toggle="tooltip" data-original-title="Add"><i class="material-icons">save</i></a>
-            <a href="#" class="edit disabled" title="" data-toggle="tooltip" data-original-title="Edit"><i class="material-icons">edit</i></a>
+            <a href="#" class="edit hide" title="" data-toggle="tooltip" data-original-title="Edit"><i class="material-icons">edit</i></a>
             <a href="#" class="delete" title="" data-toggle="tooltip" data-original-title="Delete"><i class="material-icons">delete</i></a>
         </td>
     </tr>`);
