@@ -8,18 +8,13 @@ $(document).ready(function() {
 });
 
 function initData(callback = null, page = 1) {
-    $.ajax({
-        type: "GET",
-        url: `http://localhost:${port}/api/students?limit=${limit}&offset=${(page - 1) * limit}`,
-        dataType: "json"
-    }).done(function(res) {
-        students = res.data;
-        if (page === 1) {
-            totalPages = Math.floor(res.total / limit);
-        }
-        jQuery('tbody').html('');
+    let url = `http://localhost:${port}/api/students?limit=${limit}&offset=${(page - 1) * limit}`;
+    axios.get(url).then(function(res) {
+        students = res.data.students;
+        totalPages = Math.floor(res.data.total / limit);
+        $('tbody').html('');
         students.forEach(student => {
-            jQuery('tbody').append(`
+            $('tbody').append(`
             <tr>
             <th data-type="id" scope="row">${student._id}</th>
             <td data-type="fullname">${student.name}</td>
@@ -37,22 +32,13 @@ function initData(callback = null, page = 1) {
         if (callback) {
             callback();
         }
-        $('#pagination').html('');
-        for (let i = 1; i <= totalPages; i++) {
-            let disabled = '';
-            if (Number(page) === i) {
-                disabled = 'disabled'
-            }
-            $('#pagination').append(`
-                    <li class="page-item ${disabled}">
-                    <a onclick=gotoPage(${i}) class="page-link" href="javascript:void(0)">${i}</a>
-                    </li>
-            `);
-        }
-    }).fail(function() {
-        jQuery('tbody').append("Failed to connect to server!!!");
+        renderPagination(page);
+    }).catch(function(error) {
+        $('tbody').append(error.message);
     });
 }
+
+
 
 function seachByID() {
     let searchInput = $('input[name="search"]').val();
@@ -90,11 +76,12 @@ function bindClickEvents() {
         let settings = {};
         let studentID, name, age;
         let currentButton = $(this);
+        let isCreateNewStudent = $(this).hasClass('new');
         inputs = $(this).parents('tr').find('input');
         studentID = $(this).parents('tr').find('th').html();
         name = inputs[0].value;
         age = inputs[1].value;
-        if ($(this).hasClass('new')) {
+        if (isCreateNewStudent) {
             settings = {
                 "url": `http://localhost:${port}/api/students`,
                 "method": "POST",
@@ -102,7 +89,7 @@ function bindClickEvents() {
                 "headers": {
                     "Content-Type": "application/json"
                 },
-                "data": JSON.stringify({ "id": studentID, "name": name, "age": age }),
+                "data": JSON.stringify({ "name": name, "age": age }),
             };
 
         } else {
@@ -114,23 +101,21 @@ function bindClickEvents() {
                 "headers": {
                     "Content-Type": "application/json"
                 },
-                "data": JSON.stringify({ "id": studentID, "name": name, "age": age }),
+                "data": JSON.stringify({ "name": name, "age": age }),
             };
-            studentID = $(this).data('id');
-            name = inputs[0].value;
-            age = inputs[1].value;
         }
 
         $.ajax(settings).done(function(response) {
-            if (response == 'OK') {
+            if (isCreateNewStudent) {
+                $(currentButton).parents('tr').remove();
+            } else {
                 for (let i = 0; i < inputs.length; i++) {
                     $(inputs[i]).parent()[0].innerHTML = inputs[i].value;
                 }
-                $(currentButton).hide();
-                $(currentButton).parents('tr').find('td:last-child .edit').show();
-            } else {
-                alert(response);
             }
+            initData(null, $('#pagination li.disabled a').html())
+        }).fail(function(error) {
+            alert(error);
         });
     });
 
@@ -148,11 +133,8 @@ function bindClickEvents() {
         };
 
         $.ajax(settings).done(function(response) {
-            if (response == "Success") {
-                $(thisRow).parents('tr').remove();
-            } else {
-                alert(response);
-            }
+            $(thisRow).parents('tr').remove();
+            initData();
         });
     });
 
@@ -163,7 +145,7 @@ function bindClickEvents() {
 
     $('#create').on('click', function() {
         $('tbody').append(`<tr>
-        <th data-type="id" scope="row"><input type="text" value=""></th>
+        <th data-type="id" scope="row"></th>
         <td data-type="fullname"><input type="text" value=""></td>
         <td data-type="age"><input type="text" value=""></td>
         <td>
@@ -179,4 +161,19 @@ function gotoPage(page) {
     initData(null, page);
     $('.page-link').removeClass('disabled');
     $(this).addClass('disabled');
+}
+
+function renderPagination(page) {
+    $('#pagination').html('');
+    for (let i = 1; i <= totalPages; i++) {
+        let disabled = '';
+        if (Number(page) === i) {
+            disabled = 'disabled'
+        }
+        $('#pagination').append(`
+                    <li class="page-item ${disabled}">
+                    <a onclick=gotoPage(${i}) class="page-link" href="javascript:void(0)">${i}</a>
+                    </li>
+            `);
+    }
 }

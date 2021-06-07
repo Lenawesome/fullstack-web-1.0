@@ -9,7 +9,7 @@ const StudentSchema = mongoose.Schema({
 const Student = mongoose.model('Student', StudentSchema);
 
 const find = async function(query, limit, offset) {
-    const data = await Student
+    const students = await Student
         .find(query)
         .limit(limit)
         .skip(offset)
@@ -17,7 +17,7 @@ const find = async function(query, limit, offset) {
 
     const total = await Student.countDocuments(query);
 
-    return { data, total };
+    return { students, total };
 }
 
 
