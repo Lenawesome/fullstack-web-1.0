@@ -11,7 +11,7 @@ function initData(callback = null, page = 1) {
     let url = `http://localhost:${port}/api/students?limit=${limit}&offset=${(page - 1) * limit}`;
     axios.get(url).then(function(res) {
         students = res.data.students;
-        totalPages = Math.floor(res.data.total / limit);
+        totalPages = Math.ceil(res.data.total / limit);
         $('tbody').html('');
         students.forEach(student => {
             $('tbody').append(`
