@@ -1,0 +1,17 @@
+- ReactJS : library
+- Angular (1->12) : framework
+ + Angular 1 <=> AngularJS (MVVM)
+ + Angular 2 => Khac hoan toan Angular 1
+- VueJS : library
+ + Vue 2
+ + Vue 3
+
+
+1. Library khac gi framework?
+- 
+
+ 
+ ReactJS
+ - Components
+ - JSX : ngon ngu tham chieu html
+ - Imutable state
