@@ -24,7 +24,7 @@ export default class Routing extends React.Component {
                 <Header />
                 <Switch>
                     <Route exact path="/home" component={App} />
-                    <Route exact path="/category/:postid" component={Category} />
+                    <Route exact path="/category/:categoryID" component={Category} />
                 </Switch>
                 <Footer />
             </div>
