@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const configs = require('./config/index.js');
 const productRouter = require('./modules/products/product.router');
+const categoryRouter = require('./modules/categories/category.router');
 
 mongoose.connect(configs.MONGO_CONNECTION_URL);
 
@@ -12,6 +13,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use('/api/products', productRouter.router);
+app.use('/api/categories', categoryRouter.router);
 app.use('/images', express.static(__dirname + '/images'));
 
 app.listen(configs.PORT, function () {
